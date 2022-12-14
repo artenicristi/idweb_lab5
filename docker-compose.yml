@@ -1,0 +1,37 @@
+version: '2'
+services:
+    mariadb_reglements:
+        image: mariadb:10.3.22
+        container_name: mariadb_reglements
+        environment:
+            - MYSQL_ROOT_PASSWORD=pass
+        ports:
+            - "127.0.0.212:3306:3306"
+            - "127.0.0.212:3307:3307"
+        volumes:
+            - ./data/mysql:/var/lib/mysql
+
+        networks:
+            reglements_ws_net:
+                ipv4_address: 172.34.1.4
+
+
+    mongodb_reglements:
+        image: mongo:4.4.2
+        container_name: mongodb_reglements
+        ports:
+            - "127.0.0.209:27017:27017"
+        volumes:
+            - ./data/mongo/4.4:/data/db
+            - ../publio_pap_dev:/tmp/publio_pap_dev
+
+        networks:
+            reglements_ws_net:
+                ipv4_address: 172.34.1.5
+
+networks:
+    reglements_ws_net:
+        ipam:
+            driver: default
+            config:
+                - subnet: 172.34.0.0/16
